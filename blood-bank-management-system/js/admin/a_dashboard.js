@@ -1,5 +1,5 @@
 let isLoggedIn = localStorage.getItem("isLoggedIn");
-if (isLoggedIn != "true") {
+if (isLoggedIn !== "true") {
   window.location.href = "a_login.html";
 }
 
@@ -45,4 +45,11 @@ stockUpBtn.addEventListener("click", () => {
     ).innerHTML = `<b>${bQuantity.value}</b>`;
     bQuantity.value = "";
   }
+});
+
+const logOutBtn = document.querySelector("#logoutBtn");
+
+logOutBtn.addEventListener("click", () => {
+  localStorage.setItem("isLoggedIn", "false");
+  window.location.href = "a_login.html";
 });
