@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 app.use("/api/donors", donorRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/requests", bloodRequestRoutes);
+app.use("/api/blood-requests", bloodRequestRoutes);
 
 // MongoDB Connection
 mongoose

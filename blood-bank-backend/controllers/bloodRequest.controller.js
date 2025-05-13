@@ -3,7 +3,7 @@ const User = require('../models/user.model');
 
 // Patient requests blood
 exports.createRequest = async (req, res) => {
-  const { patientId, bloodGroup, location, contactNumber } = req.body;
+  const { patientId, bloodGroup, location, contactNumber, firstName, lastName } = req.body;
 
   try {
     const patient = await User.findById(patientId);
