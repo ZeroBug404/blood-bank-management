@@ -1,9 +1,10 @@
 document.getElementById("dWelcome").innerText = "Welcome Donor";
 
-//blood request form
-document.getElementById("br-email").value = "donor@gmail.com"; // will  be added dynamically
+// Prefill email (can be dynamically set)
+document.getElementById("br-email").value = "donor@gmail.com";
 
-document.getElementById("br-form").addEventListener("submit", (event) => {
+// Handle form submission
+document.getElementById("br-form").addEventListener("submit", async (event) => {
   event.preventDefault();
 
   let fName = document.getElementById("br-fName").value;
@@ -16,19 +17,43 @@ document.getElementById("br-form").addEventListener("submit", (event) => {
   let address = document.getElementById("br-address").value;
   let phone = document.getElementById("br-phone").value;
   let description = document.getElementById("br-description").value;
+  let email = document.getElementById("br-email").value;
 
   if (bloodGrp !== "Enter Blood Group") {
-    //will be stored in db
-    console.log(`Name: ${fName} ${lName}`);
-    console.log(`Age: `, age);
-    console.log("Gender: ", gender);
-    console.log(`Blood Group: `, bloodGrp);
-    console.log(`Reason: `, reason);
-    console.log(`Quantity: `, quantity);
-    console.log(`Address: `, address);
-    console.log(`Phone: `, phone);
-    console.log(`Description: `, description);
-    alert("Blood Request Submitted!");
+    const requestData = {
+      firstName: fName,
+      lastName: lName,
+      age,
+      gender,
+      bloodGroup: bloodGrp,
+      reason,
+      quantity,
+      address,
+      phone,
+      description,
+      email
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/blood-requests", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      if (response.ok) {
+        alert("Blood Request Submitted!");
+        document.getElementById("br-form").reset(); // optional: clears form
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to submit: ${errorData.message || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while submitting the form.");
+    }
   } else {
     alert("Input All Fields!");
   }

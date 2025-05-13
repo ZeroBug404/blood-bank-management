@@ -1,35 +1,37 @@
-const dLoginForm = document.querySelector("#dLoginForm");
+document.addEventListener("DOMContentLoaded", () => {
+  const dLoginForm = document.querySelector("#dLoginForm");
 
-dLoginForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
+  if (!dLoginForm) return;
 
-  const dLoginEmail = document.querySelector("#dLoginEmail").value;
-  const dLoginPassword = document.querySelector("#dLoginPassword").value;
+  dLoginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  try {
-    const response = await fetch("http://localhost:5000/api/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: dLoginEmail,
-        password: dLoginPassword,
-      }),
-    });
+    const dLoginEmail = document.querySelector("#dLoginEmail").value;
+    const dLoginPassword = document.querySelector("#dLoginPassword").value;
 
-    console.log(response);
+    try {
+      const response = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: dLoginEmail,
+          password: dLoginPassword,
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok && data.user.role === "donor") {
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userRole", data.user.role);
-      localStorage.setItem("userId", data.user._id);
-      window.location.href = "/donor/d_dashboard.html";
-    } else {
-      alert("Invalid donor credentials or not a donor!");
+      if (response.ok && data.user.role === "donor") {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("userRole", data.user.role);
+        localStorage.setItem("userId", data.user._id);
+        window.location.href = "/donor/d_dashboard.html";
+      } else {
+        alert("Invalid donor credentials or not a donor!");
+      }
+    } catch (error) {
+      alert("Error connecting to server");
+      console.error(error);
     }
-  } catch (error) {
-    alert("Error connecting to server");
-    console.error(error);
-  }
+  });
 });

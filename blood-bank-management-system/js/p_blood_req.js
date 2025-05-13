@@ -114,3 +114,8 @@ document.getElementById("br-form").addEventListener("submit", (event) => {
     alert("Input All Fields!");
   }
 });
+
+
+// localhost:5000/api/requests (post)
+
+// --> request-->controller
